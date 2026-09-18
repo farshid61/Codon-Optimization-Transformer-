@@ -1,11 +1,26 @@
-**Transformer-Based Codon Sequence Prediction**
+## Transformer-based codon prediction
 
-This project implements a Transformer-based sequence-to-sequence model in PyTorch for predicting coding DNA sequences from amino acid sequences. The model learns codon-usage and sequence-context patterns from the training dataset. Therefore, its predictions reflect the characteristics of the sequences used for training; for example, training on sequences with higher GC content can bias predictions toward higher-GC codon patterns.
+This project uses a Transformer model to predict codon sequences from protein sequences.
 
-The Transformer architecture was implemented based on the principles introduced in “Attention Is All You Need,” including positional encoding, multi-head attention, encoder-decoder attention, residual connections, and feed-forward layers.
+The model learns codon usage patterns from the training dataset. For example, if the training sequences have high GC content, the model will tend to predict codons following a similar pattern.
 
-Pretrained WordLevel tokenizers for amino-acid, DNA, and RNA sequences are provided in the tokenizers directory. Example paired protein and coding sequences from Oryza sativa are included in the data directory.
+The model was built in PyTorch based on the Transformer architecture from the "Attention Is All You Need" paper.
 
-The pipeline includes training, validation, testing, and autoregressive inference. During inference, an amino-acid sequence is provided as input, and the model predicts the corresponding codon sequence using greedy decoding by default. The output also reports sequence-level information such as GC content and codon usage.
+### How it works
 
-Model performance can be examined using sequence-quartile accuracy, confusion matrices, precision, recall, and F1-score. The project also provides exploratory analysis of learned amino-acid and codon embeddings using UMAP and K-means clustering to investigate patterns captured by the Transformer.
+The input is an amino acid sequence and the target is its corresponding DNA sequence. During training, the model learns the relationship between amino acids, codons, and their sequence context.
+
+Pretrained tokenizers for amino acids, DNA, and RNA are already provided in the `tokenizers` folder. Example protein and DNA sequences from *Oryza sativa* are also available in the `data` folder.
+
+During inference, you only need to provide a protein sequence in FASTA format. The model predicts the codon sequence step by step using greedy decoding. The output also provides information such as GC content and codon usage for each amino acid.
+
+### Model evaluation
+
+The code includes several options for checking model performance:
+
+- accuracy across four regions of the protein sequence
+- confusion matrix
+- precision, recall, and F1-score
+- GC content of predicted sequences
+
+I also used UMAP to visualize the learned amino acid and codon embeddings, followed by K-means clustering. This was mainly an exploratory analysis to see whether the model learned interesting relationships among amino acids and codons.
