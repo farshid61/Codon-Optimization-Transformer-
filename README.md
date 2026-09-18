@@ -1,8 +1,11 @@
-A code to provide optimized codons for our desired protein (it learns a template based on the training dataset, so if you feed the algorithm sequences with high GC content, it will predict codons with high GC content).
+**Transformer-Based Codon Sequence Prediction**
 
-- The entire structure of this algorithm is based on the "Attention Is All You Need" paper.
-- There is no need to build a tokenizing structure; the pretrained token files have already been prepared (in "tokenizers" folder). Simply save them in your desired directory and set the path in the path_amino and path_dna variables (in step 2).
-- A sample file containing amino acids and their corresponding codons has been prepared in "data" folder (for some proteins in Oryza sativa) and is named sequence.txt and sequence.fasta.
-- In the error analysis section, the length of these samples is divided into four quartiles to check whether errors are evenly distributed or concentrated in a specific part. A heatmap is also provided to show the percentage of correctly predicted codons (normalized over the true labels). The recall, precision, and F1-score are provided in a table.
-- In the inference stage (step 10), the path_infer parameter is the address of the FASTA file of your amino acid sequences specified in step 2. It predicts the sequence based on the training dataset template and provides additional useful information, such as GC content and the percentage of selected codons for each amino acid.
-- In codon and amino acid dependency (step 11), the final dimensions of the embedding values for each amino acid and codon are reduced using the UMAP technique, and then K-means clustering is applied to group them. This approach could help identify a template, rule, or biological explanation for why some codons cluster together more closely than others.
+This project implements a Transformer-based sequence-to-sequence model in PyTorch for predicting coding DNA sequences from amino acid sequences. The model learns codon-usage and sequence-context patterns from the training dataset. Therefore, its predictions reflect the characteristics of the sequences used for training; for example, training on sequences with higher GC content can bias predictions toward higher-GC codon patterns.
+
+The Transformer architecture was implemented based on the principles introduced in “Attention Is All You Need,” including positional encoding, multi-head attention, encoder-decoder attention, residual connections, and feed-forward layers.
+
+Pretrained WordLevel tokenizers for amino-acid, DNA, and RNA sequences are provided in the tokenizers directory. Example paired protein and coding sequences from Oryza sativa are included in the data directory.
+
+The pipeline includes training, validation, testing, and autoregressive inference. During inference, an amino-acid sequence is provided as input, and the model predicts the corresponding codon sequence using greedy decoding by default. The output also reports sequence-level information such as GC content and codon usage.
+
+Model performance can be examined using sequence-quartile accuracy, confusion matrices, precision, recall, and F1-score. The project also provides exploratory analysis of learned amino-acid and codon embeddings using UMAP and K-means clustering to investigate patterns captured by the Transformer.
